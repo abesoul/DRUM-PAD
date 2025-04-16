@@ -5,21 +5,17 @@
   <title>Drum Machine</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <script>
+
+ <body>
+   <script>
     if (!localStorage.getItem("loggedInUser")) {
       window.location.href = "login.html";
     }
   </script>
-
-  <div class="top-bar">
-    <h1>🔥 Space Drum Machine 🔊</h1>
-    <button onclick="logout()">Logout</button>
-  </div>
-
- <body>
+   
   <div class="app">
     <h1 class="title">🚀 Space Drum Machine</h1>
+     <button onclick="logout()">Logout</button>
     <div id="display">
       <h2 id="display-text">Press a Key or Click a Pad</h2>
     </div>
