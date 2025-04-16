@@ -2,26 +2,46 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login - Drum Machine</title>
+  <title>Drum Machine</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="login-body">
-  <div id="login-container">
-    <h1>Login to Drum Machine</h1>
-    <button id="login-btn">Login with Google</button>
+<body>
+  <script>
+    if (!localStorage.getItem("loggedInUser")) {
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <div class="top-bar">
+    <h1>🔥 Space Drum Machine 🔊</h1>
+    <button onclick="logout()">Logout</button>
   </div>
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
-  <!-- Firebase configuration and login script -->
-  <script type="module" src="./firebase-config.js"></script>
-  <script type="module" src="login.js"></script>
-  <script>
-  if (!localStorage.getItem("loggedInUser")) {
-    window.location.href = "login.html";
-  }
-</script>
+  <div id="drum-machine">
+    <div id="display">
+      <h2 id="display-text">Press a Key or Click a Pad</h2>
+    </div>
+
+    <div id="drum-pads"></div>
+
+    <div id="controls">
+      <label>Loop: <input type="checkbox" id="loop-toggle" /></label>
+      <label>Start Time: <input type="range" id="start-time" min="0" max="30" step="0.1" /></label>
+      <label>End Time: <input type="range" id="end-time" min="0" max="30" step="0.1" /></label>
+    </div>
+
+    <div id="reverb-controls">
+      <h3>Reverb</h3>
+      <label>Mix: <input type="range" id="reverb-mix" min="0" max="1" step="0.01" /></label>
+      <label>Decay: <input type="range" id="reverb-decay" min="0" max="10" step="0.1" /></label>
+      <label>Size: <input type="range" id="reverb-size" min="0" max="1" step="0.01" /></label>
+    </div>
+
+    <div id="spectrum">
+      <canvas id="spectrum-canvas" width="800" height="150"></canvas>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
