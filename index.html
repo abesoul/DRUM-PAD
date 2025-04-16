@@ -8,6 +8,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
 </head>
 <body>
+   <script>
+    // Redirect to login if not logged in
+    if (!localStorage.getItem("loggedInUser")) {
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <div id="auth-bar">
+    <span>Welcome, <span id="user-name"></span></span>
+    <button onclick="logout()">Logout</button>
+  </div>
+  
   <div class="app">
      <h1>🔥 Space Drum Machine 🔊</h1>
     <button onclick="logout()">Logout</button>
@@ -15,10 +27,6 @@
       <h2 id="display-text">Press a Key or Click a Pad</h2>
     </div>
     
-<script>
-  if (!localStorage.getItem("loggedInUser")) {
-    window.location.href = "login.html";
-  }
 </script>
 
     <div class="pad-grid">
