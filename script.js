@@ -18,6 +18,8 @@ let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 let analyser = audioContext.createAnalyser();
 let isUserLoggedIn = false;
 let projectData = [];
+let trimStart = 0;
+let trimEnd = 10;
 
 // Handle audio playback with loop functionality
 let activeSounds = {};  // Track active sounds for merging
@@ -32,6 +34,32 @@ function toggleLooping(soundKey) {
     audio.loop = true;
     audio.play();
   }
+}
+function handlePlay(key) {
+  if (!buffers[key]) return;
+
+  // Stop current if playing
+  if (sources[key]) {
+    sources[key].stop();
+    sources[key] = null;
+    return;
+  }
+
+  const buffer = buffers[key];
+  const duration = buffer.duration;
+  const start = Math.min(trimStart, duration - 0.1); // avoid overflow
+  const end = Math.min(trimEnd, duration);
+  const playDuration = Math.max(0.1, end - start);
+
+  const source = audioCtx.createBufferSource();
+  source.buffer = buffer;
+  source.loop = loopToggle.checked;
+  source.connect(compressor);
+  source.start(0, start, playDuration);
+
+  sources[key] = source;
+
+  display.innerText = `Playing ${key} from ${start}s to ${end}s`;
 }
 
 // Handle Login/Logout
@@ -100,4 +128,11 @@ document.getElementById("file-upload").addEventListener("change", (e) => {
     };
     reader.readAsArrayBuffer(file);
   }
+});
+document.getElementById("start-time").addEventListener("input", (e) => {
+  trimStart = parseFloat(e.target.value);
+});
+
+document.getElementById("end-time").addEventListener("input", (e) => {
+  trimEnd = parseFloat(e.target.value);
 });
