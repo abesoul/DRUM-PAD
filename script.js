@@ -1,4 +1,107 @@
-const keys = {
+const display = document.getElementById("display-text");
+const pads = document.querySelectorAll(".drum-pad");
+const uploadInput = document.getElementById("file-upload");
+const assignKey = document.getElementById("assign-key");
+const loopToggle = document.getElementById("loop-toggle-checkbox");
+const startTimeInput = document.getElementById("start-time");
+const endTimeInput = document.getElementById("end-time");
+
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const analyser = audioContext.createAnalyser();
+analyser.fftSize = 256;
+const bufferLength = analyser.frequencyBinCount;
+const dataArray = new Uint8Array(bufferLength);
+
+// Reverb & Compressor setup
+const convolver = audioContext.createConvolver();
+const compressor = audioContext.createDynamicsCompressor();
+
+// Setting default compressor settings to emulate SSL Bus Compressor
+compressor.threshold.setValueAtTime(-24, audioContext.currentTime);
+compressor.knee.setValueAtTime(30, audioContext.currentTime);
+compressor.ratio.setValueAtTime(4, audioContext.currentTime);
+compressor.attack.setValueAtTime(0.003, audioContext.currentTime);
+compressor.release.setValueAtTime(0.25, audioContext.currentTime);
+
+// Initialize audio elements for drum pads
+const audioElements = {};
+let currentAudio = null;
+let currentSource = null;
+
+function createAudio(key, src) {
+  const audio = new Audio(src);
+  audio.loop = loopToggle.checked;
+  audioElements[key] = audio;
+}
+
+// Spectrum visualization function
+function visualizeAudio(audio) {
+  const canvas = document.getElementById("spectrum");
+  const canvasCtx = canvas.getContext("2d");
+
+  function draw() {
+    analyser.getByteFrequencyData(dataArray);
+    canvasCtx.fillStyle = "rgba(0, 0, 0, 0.1)";
+    canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+
+    const barWidth = (canvas.width / bufferLength) * 2.5;
+    let barHeight;
+    let x = 0;
+
+    for (let i = 0; i < bufferLength; i++) {
+      barHeight = dataArray[i];
+      canvasCtx.fillStyle = "#00f7ff";
+      canvasCtx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+      x += barWidth + 1;
+    }
+
+    if (audio && !audio.paused) {
+      requestAnimationFrame(draw);
+    }
+  }
+
+  draw();
+}
+
+// Trim audio logic
+function trimAudio(audio, startTime, endTime) {
+  audio.currentTime = startTime;
+  audio.addEventListener("timeupdate", function () {
+    if (audio.currentTime >= endTime) {
+      audio.pause();
+    }
+  });
+}
+
+// Start/Stop logic
+function toggleAudio(key) {
+  const audio = audioElements[key];
+  if (audio.paused) {
+    if (currentAudio && currentAudio !== audio) {
+      currentAudio.pause();
+    }
+    audio.currentTime = startTimeInput.value;
+    audio.loop = loopToggle.checked;
+    audio.play();
+    visualizeAudio(audio);
+    currentAudio = audio;
+    display.textContent = `Playing: ${key} ${audio.loop ? "(Looping)" : ""}`;
+  } else {
+    audio.pause();
+    display.textContent = `Stopped: ${key}`;
+  }
+}
+
+// Event listener for key pads
+pads.forEach(pad => {
+  pad.addEventListener("click", () => {
+    const key = pad.dataset.key;
+    toggleAudio(key);
+  });
+});
+
+// Create audio elements for default sounds
+const sounds = {
   Q: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
   W: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
   E: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
@@ -10,92 +113,37 @@ const keys = {
   C: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3"
 };
 
-const display = document.getElementById("display-text");
-const loopToggle = document.getElementById("loop-toggle");
-const canvas = document.getElementById("spectrum-canvas");
-const ctx = canvas.getContext("2d");
+for (const key in sounds) {
+  createAudio(key, sounds[key]);
+}
 
-let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-let analyser = audioCtx.createAnalyser();
-let gainNode = audioCtx.createGain();
-let convolver = audioCtx.createConvolver();
-let compressor = audioCtx.createDynamicsCompressor();
-let buffers = {};
-let sources = {};
-let trimStart = 0;
-let trimEnd = 10;
+// Handle file upload and assign to key
+uploadInput.addEventListener("change", function () {
+  const file = this.files[0];
+  const selectedKey = assignKey.value;
 
-// Load default reverb IR
-fetch("https://cdn.jsdelivr.net/gh/mdn/webaudio-examples/voice-change-o-matic/audio/concert-crowd.ogg")
-  .then(res => res.arrayBuffer())
-  .then(buf => audioCtx.decodeAudioData(buf))
-  .then(decoded => convolver.buffer = decoded);
-
-Object.keys(keys).forEach(k => {
-  const pad = document.createElement("div");
-  pad.className = "drum-pad";
-  pad.innerText = k;
-  pad.onclick = () => handlePlay(k);
-  document.getElementById("drum-pads").appendChild(pad);
-
-  fetch(keys[k])
-    .then(res => res.arrayBuffer())
-    .then(buf => audioCtx.decodeAudioData(buf))
-    .then(audio => buffers[k] = audio);
+  if (file && selectedKey) {
+    const url = URL.createObjectURL(file);
+    createAudio(selectedKey, url);
+    display.textContent = `Sample assigned to ${selectedKey}`;
+  } else {
+    alert("Select a key and upload a sample!");
+  }
 });
 
-document.getElementById("start-time").addEventListener("input", e => trimStart = parseFloat(e.target.value));
-document.getElementById("end-time").addEventListener("input", e => trimEnd = parseFloat(e.target.value));
+// Reverb amount
+document.getElementById("reverb-amount").addEventListener("input", function () {
+  const amount = parseFloat(this.value);
+  convolver.setValue(amount);
+});
 
-function handlePlay(key) {
-  if (!buffers[key]) return;
+// Compressor threshold and ratio
+document.getElementById("compressor-threshold").addEventListener("input", function () {
+  const threshold = parseFloat(this.value);
+  compressor.threshold.setValueAtTime(threshold, audioContext.currentTime);
+});
 
-  if (sources[key]) {
-    sources[key].stop();
-    sources[key] = null;
-    return;
-  }
-
-  const source = audioCtx.createBufferSource();
-  source.buffer = buffers[key];
-  source.loop = loopToggle.checked;
-
-  const reverbMix = parseFloat(document.getElementById("reverb-mix").value);
-  const dryGain = audioCtx.createGain();
-  dryGain.gain.value = 1 - reverbMix;
-  const wetGain = audioCtx.createGain();
-  wetGain.gain.value = reverbMix;
-
-  source.connect(dryGain).connect(compressor);
-  source.connect(convolver).connect(wetGain).connect(compressor);
-  compressor.connect(analyser).connect(gainNode).connect(audioCtx.destination);
-
-  const start = Math.min(trimStart, source.buffer.duration - 0.1);
-  const end = Math.min(trimEnd, source.buffer.duration);
-  const duration = Math.max(0.1, end - start);
-
-  source.start(0, start, duration);
-  sources[key] = source;
-  display.innerText = `Playing ${key} from ${start}s to ${end}s`;
-}
-
-function logout() {
-  localStorage.removeItem("loggedInUser");
-  window.location.href = "login.html";
-}
-
-function drawSpectrum() {
-  requestAnimationFrame(drawSpectrum);
-  const data = new Uint8Array(analyser.frequencyBinCount);
-  analyser.getByteFrequencyData(data);
-
-  ctx.fillStyle = "#000";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  ctx.fillStyle = "#0f0";
-  data.forEach((v, i) => {
-    ctx.fillRect(i * 3, canvas.height - v, 2, v);
-  });
-}
-
-drawSpectrum();
+document.getElementById("compressor-ratio").addEventListener("input", function () {
+  const ratio = parseFloat(this.value);
+  compressor.ratio.setValueAtTime(ratio, audioContext.currentTime);
+});
