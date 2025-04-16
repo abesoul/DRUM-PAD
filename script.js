@@ -74,6 +74,11 @@ function trimAudio(audio, startTime, endTime) {
   });
 }
 
+function logout() {
+  localStorage.removeItem("loggedInUser");
+  window.location.href = "login.html";
+}
+
 // Start/Stop logic
 function toggleAudio(key) {
   const audio = audioElements[key];
