@@ -31,5 +31,5 @@ function register() {
 
   users[username] = { password, projects: [] };
   saveUsers(users);
-  document.getElementById("login-msg").innerText = "Registered! Now you can login.";
+  document.getElementById("login-msg").innerText = "Registered! Now login.";
 }
