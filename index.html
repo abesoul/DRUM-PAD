@@ -67,6 +67,28 @@
     </div>
       </label>
     </div>
+  
+  <div class="pad-builder">
+      <h3>Drag and Drop to Assign Pads</h3>
+      <input type="file" id="file-upload" accept="audio/*" />
+      <select id="assign-key">
+        <option value="">Assign to Key</option>
+        <option value="Q">Q</option>
+        <option value="W">W</option>
+        <option value="E">E</option>
+        <option value="A">A</option>
+        <option value="S">S</option>
+        <option value="D">D</option>
+        <option value="Z">Z</option>
+        <option value="X">X</option>
+        <option value="C">C</option>
+      </select>
+      <button onclick="assignSample()">Assign</button>
+    </div>
+
+    <div class="pad-grid" id="drum-pads">
+      <!-- Pads will be dynamically created -->
+    </div>
     <div class="controls">
       <label>
 
