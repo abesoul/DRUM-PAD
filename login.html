@@ -2,18 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Login - Space Drum Machine</title>
+  <title>Login - Drum Machine</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="login-page">
+<body class="login-body">
   <div class="login-container">
-    <h1>Login to Space Drum Machine</h1>
+    <h2>Login to Drum Machine</h2>
     <input type="text" id="username" placeholder="Username" />
     <input type="password" id="password" placeholder="Password" />
-    <button onclick="login()">Login</button>
-    <button onclick="register()">Register</button>
-    <p id="login-message"></p>
+    <div class="btns">
+      <button onclick="login()">Login</button>
+      <button onclick="register()">Register</button>
+    </div>
+    <p id="login-msg"></p>
   </div>
+
   <script src="login.js"></script>
 </body>
 </html>
