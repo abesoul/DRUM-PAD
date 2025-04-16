@@ -3,20 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🚀 Space Drum Machine</title>
+  <title>Space Drum Machine</title>
   <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
 </head>
 <body>
+  <div class="app">
+    <h1 class="title">🚀 Space Drum Machine</h1>
+    <div id="display">
+      <h2 id="display-text">Press a Key or Click a Pad</h2>
   <script>
     if (!localStorage.getItem("loggedInUser")) {
       window.location.href = "login.html";
     }
   </script>
-
-  <div class="app">
-    <h1 class="title">🚀 Space Drum Machine</h1>
-    <button onclick="logout()">Logout</button>
-  
+    <button onclick="logout()">Logout</button> 
 
     <div class="pad-grid">
       <div class="drum-pad" data-key="Q">Q</div>
