@@ -5,18 +5,35 @@
   <title>Login - Drum Machine</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="login-body">
-  <div class="login-container">
-    <h2>Login to Drum Machine</h2>
-    <input type="text" id="username" placeholder="Username" />
-    <input type="password" id="password" placeholder="Password" />
-    <div class="btns">
-      <button onclick="login()">Login</button>
-      <button onclick="register()">Register</button>
-    </div>
-    <p id="login-msg"></p>
+<body>
+  <div class="auth-container">
+    <h2>Login or Register</h2>
+    <form id="auth-form">
+      <input type="text" id="username" placeholder="Username" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Login / Register</button>
+    </form>
   </div>
 
-  <script src="login.js"></script>
+  <script>
+    const form = document.getElementById("auth-form");
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+
+      if (user && pass) {
+        localStorage.setItem("loggedInUser", JSON.stringify({ user, pass }));
+        window.location.href = "index.html";
+      } else {
+        alert("Please enter both username and password.");
+      }
+    });
+
+    // Auto redirect if already logged in
+    if (localStorage.getItem("loggedInUser")) {
+      window.location.href = "index.html";
+    }
+  </script>
 </body>
 </html>
