@@ -136,3 +136,12 @@ document.getElementById("start-time").addEventListener("input", (e) => {
 document.getElementById("end-time").addEventListener("input", (e) => {
   trimEnd = parseFloat(e.target.value);
 });
+firebase.auth().signInWithPopup(provider)
+  .then((result) => {
+    // Successful sign-in
+  })
+  .catch((error) => {
+    // Handle Errors here.
+    console.error('Error during sign-in:', error);
+    alert(`Error: ${error.message}`);
+  });
