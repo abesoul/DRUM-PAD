@@ -18,5 +18,10 @@
   <!-- Firebase configuration and login script -->
   <script type="module" src="./firebase-config.js"></script>
   <script type="module" src="login.js"></script>
+  <script>
+  if (!localStorage.getItem("loggedInUser")) {
+    window.location.href = "login.html";
+  }
+</script>
 </body>
 </html>
