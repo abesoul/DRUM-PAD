@@ -17,12 +17,45 @@
     <h1 class="title">🚀 Space Drum Machine</h1>
     <button onclick="logout()">Logout</button>
     <h2 id="display-text">Press a Key or Click a Pad</h2>
-    <canvas id="visualizer" width="800" height="100"></canvas>
+    <canvas id="visualizer" width="800" height="100"></canvas
 
-    <div class="pad-grid" id="drum-pads">
-      <!-- Pads dynamically created in JS -->
+    <div class="pad-grid">
+      <div class="drum-pad" data-key="Q">Q</div>
+      <div class="drum-pad" data-key="W">W</div>
+      <div class="drum-pad" data-key="E">E</div>
+      <div class="drum-pad" data-key="A">A</div>
+      <div class="drum-pad" data-key="S">S</div>
+      <div class="drum-pad" data-key="D">D</div>
+      <div class="drum-pad" data-key="Z">Z</div>
+      <div class="drum-pad" data-key="X">X</div>
+      <div class="drum-pad" data-key="C">C</div>
     </div>
 
+    <div class="controls">
+      <label class="upload-label">
+        Upload Custom Sample
+        <input type="file" id="file-upload" accept="audio/*" />
+      </label>
+      <select id="assign-key">
+        <option value="">Assign to Key</option>
+        <option value="Q">Q</option>
+        <option value="W">W</option>
+        <option value="E">E</option>
+        <option value="A">A</option>
+        <option value="S">S</option>
+        <option value="D">D</option>
+        <option value="Z">Z</option>
+        <option value="X">X</option>
+        <option value="C">C</option>
+      </select>
+    </div>
+
+    <div class="loop-toggle">
+      <label for="loop-toggle-checkbox">
+        <input type="checkbox" id="loop-toggle-checkbox" />
+        Loop Mode
+      </label>
+    </div>
     <div class="controls">
       <label>
         Upload Sample:
