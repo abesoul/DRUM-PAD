@@ -3,95 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Space Drum Machine</title>
+  <title>Login - Drum Machine</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
-  <script src="https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore.js"></script>
 </head>
-<body>
-  <div class="app">
-    <h1 class="title">🚀 Space Drum Machine</h1>
-    <div id="display">
-      <h2 id="display-text">Press a Key or Click a Pad</h2>
-    </div>
-
-    <div class="pad-grid">
-      <div class="drum-pad" data-key="Q">Q</div>
-      <div class="drum-pad" data-key="W">W</div>
-      <div class="drum-pad" data-key="E">E</div>
-      <div class="drum-pad" data-key="A">A</div>
-      <div class="drum-pad" data-key="S">S</div>
-      <div class="drum-pad" data-key="D">D</div>
-      <div class="drum-pad" data-key="Z">Z</div>
-      <div class="drum-pad" data-key="X">X</div>
-      <div class="drum-pad" data-key="C">C</div>
-    </div>
-
-    <div class="controls">
-      <label class="upload-label">
-        Upload Custom Sample
-        <input type="file" id="file-upload" accept="audio/*" />
-      </label>
-      <select id="assign-key">
-        <option value="">Assign to Key</option>
-        <option value="Q">Q</option>
-        <option value="W">W</option>
-        <option value="E">E</option>
-        <option value="A">A</option>
-        <option value="S">S</option>
-        <option value="D">D</option>
-        <option value="Z">Z</option>
-        <option value="X">X</option>
-        <option value="C">C</option>
-      </select>
-    </div>
-
-    <div class="loop-toggle">
-      <label for="loop-toggle-checkbox">
-        <input type="checkbox" id="loop-toggle-checkbox" />
-        Loop Mode
-      </label>
-    </div>
-
-    <div id="spectrum-container">
-      <canvas id="spectrum"></canvas>
-    </div>
-
-    <div class="trim-controls">
-      <label for="start-time">Start Time (s):</label>
-      <input type="number" id="start-time" min="0" step="0.1" value="0">
-      <label for="end-time">End Time (s):</label>
-      <input type="number" id="end-time" min="0" step="0.1" value="5">
-    </div>
-
-    <div class="effects">
-      <h3>Effects</h3>
-      <div>
-        <label for="reverb-amount">Reverb Amount:</label>
-        <input type="range" id="reverb-amount" min="0" max="1" step="0.1" value="0.5" />
-      </div>
-      <div>
-        <label for="compressor-threshold">Compressor Threshold:</label>
-        <input type="range" id="compressor-threshold" min="-60" max="0" step="1" value="-24" />
-      </div>
-      <div>
-        <label for="compressor-ratio">Compressor Ratio:</label>
-        <input type="range" id="compressor-ratio" min="1" max="20" step="0.1" value="4" />
-      </div>
-    </div>
-
-    <button id="hold-loop-btn">Hold Loop</button>
-    <button id="save-project-btn">Save Project</button>
-    <button id="download-project-btn">Download Project</button>
-
-    <div id="auth-container">
-      <button id="login-btn">Login with Google</button>
-      <button id="logout-btn">Logout</button>
-    </div>
+<body class="login-body">
+  <div id="login-container">
+    <h1>Login to Drum Machine</h1>
+    <button id="login-btn">Login with Google</button>
   </div>
 
-  <script src="script.js"></script>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
+  <!-- Firebase configuration and login script -->
+  <script type="module" src="./firebase-config.js"></script>
+  <script type="module" src="login.js"></script>
 </body>
 </html>
