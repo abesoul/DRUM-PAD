@@ -13,13 +13,12 @@
     <div id="display">
       <h2 id="display-text">Press a Key or Click a Pad</h2>
     </div>
-
-  <script>
-    if (!localStorage.getItem("loggedInUser")) {
-      window.location.href = "login.html";
-    }
-  </script>
-    <button onclick="logout()">Logout</button> 
+    
+<script>
+  if (!localStorage.getItem("loggedInUser")) {
+    window.location.href = "login.html";
+  }
+</script>
 
     <div class="pad-grid">
       <div class="drum-pad" data-key="Q">Q</div>
@@ -32,10 +31,7 @@
       <div class="drum-pad" data-key="X">X</div>
       <div class="drum-pad" data-key="C">C</div>
     </div>
-    
-<h2 id="display-text">Press a Key or Click a Pad</h2>
-    <canvas id="visualizer" width="800" height="100"></canvas
-                                                       
+
     <div class="controls">
       <label class="upload-label">
         Upload Custom Sample
@@ -58,6 +54,10 @@
     <div class="loop-toggle">
       <label for="loop-toggle-checkbox">
         <input type="checkbox" id="loop-toggle-checkbox" />
+        Loop Mode
+      </label>
+    </div>
+
         Loop Mode
       </label>
     </div>
