@@ -17,28 +17,76 @@
     <button onclick="logout()">Logout</button>
   </div>
 
-  <div id="drum-machine">
+ <body>
+  <div class="app">
+    <h1 class="title">🚀 Space Drum Machine</h1>
     <div id="display">
       <h2 id="display-text">Press a Key or Click a Pad</h2>
     </div>
 
-    <div id="drum-pads"></div>
-
-    <div id="controls">
-      <label>Loop: <input type="checkbox" id="loop-toggle" /></label>
-      <label>Start Time: <input type="range" id="start-time" min="0" max="30" step="0.1" /></label>
-      <label>End Time: <input type="range" id="end-time" min="0" max="30" step="0.1" /></label>
+    <div class="pad-grid">
+      <div class="drum-pad" data-key="Q">Q</div>
+      <div class="drum-pad" data-key="W">W</div>
+      <div class="drum-pad" data-key="E">E</div>
+      <div class="drum-pad" data-key="A">A</div>
+      <div class="drum-pad" data-key="S">S</div>
+      <div class="drum-pad" data-key="D">D</div>
+      <div class="drum-pad" data-key="Z">Z</div>
+      <div class="drum-pad" data-key="X">X</div>
+      <div class="drum-pad" data-key="C">C</div>
     </div>
 
-    <div id="reverb-controls">
-      <h3>Reverb</h3>
-      <label>Mix: <input type="range" id="reverb-mix" min="0" max="1" step="0.01" /></label>
-      <label>Decay: <input type="range" id="reverb-decay" min="0" max="10" step="0.1" /></label>
-      <label>Size: <input type="range" id="reverb-size" min="0" max="1" step="0.01" /></label>
+    <div class="controls">
+      <label class="upload-label">
+        Upload Custom Sample
+        <input type="file" id="file-upload" accept="audio/*" />
+      </label>
+      <select id="assign-key">
+        <option value="">Assign to Key</option>
+        <option value="Q">Q</option>
+        <option value="W">W</option>
+        <option value="E">E</option>
+        <option value="A">A</option>
+        <option value="S">S</option>
+        <option value="D">D</option>
+        <option value="Z">Z</option>
+        <option value="X">X</option>
+        <option value="C">C</option>
+      </select>
     </div>
 
-    <div id="spectrum">
-      <canvas id="spectrum-canvas" width="800" height="150"></canvas>
+    <div class="loop-toggle">
+      <label for="loop-toggle-checkbox">
+        <input type="checkbox" id="loop-toggle-checkbox" />
+        Loop Mode
+      </label>
+    </div>
+
+    <div id="spectrum-container">
+      <canvas id="spectrum"></canvas>
+    </div>
+
+    <div class="trim-controls">
+      <label for="start-time">Start Time (s):</label>
+      <input type="number" id="start-time" min="0" step="0.1" value="0">
+      <label for="end-time">End Time (s):</label>
+      <input type="number" id="end-time" min="0" step="0.1" value="5">
+    </div>
+
+    <div class="effects">
+      <h3>Effects</h3>
+      <div>
+        <label for="reverb-amount">Reverb Amount:</label>
+        <input type="range" id="reverb-amount" min="0" max="1" step="0.1" value="0.5" />
+      </div>
+      <div>
+        <label for="compressor-threshold">Compressor Threshold:</label>
+        <input type="range" id="compressor-threshold" min="-60" max="0" step="1" value="-24" />
+      </div>
+      <div>
+        <label for="compressor-ratio">Compressor Ratio:</label>
+        <input type="range" id="compressor-ratio" min="1" max="20" step="0.1" value="4" />
+      </div>
     </div>
   </div>
 
