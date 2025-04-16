@@ -54,6 +54,11 @@ function visualizeAudio(audio) {
       canvasCtx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
       x += barWidth + 1;
     }
+    
+function logout() {
+  localStorage.removeItem("loggedInUser");
+  window.location.href = "login.html";
+}
 
     if (audio && !audio.paused) {
       requestAnimationFrame(draw);
