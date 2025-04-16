@@ -55,10 +55,6 @@ function visualizeAudio(audio) {
       x += barWidth + 1;
     }
     
-function logout() {
-  localStorage.removeItem("loggedInUser");
-  window.location.href = "login.html";
-}
 
     if (audio && !audio.paused) {
       requestAnimationFrame(draw);
